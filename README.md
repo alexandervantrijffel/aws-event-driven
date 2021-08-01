@@ -12,7 +12,11 @@ SERVICES=kinesis TMPDIR=${TMPDIR:-/tmp} docker-compose up -d
 yarn lerna run start
 ```
 
-Browse the Kafka topics and consumers with [Offset Explorer](https://kafkatool.com). Make sure to set the bootstrap servers field on the advanced tab to `localhost:9092`.
+Install `awslocal` with:
+
+```bash
+pip install awscli-local
+```
 
 ### Example commands for Lerna monorepo
 
