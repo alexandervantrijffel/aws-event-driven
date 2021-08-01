@@ -22,6 +22,14 @@ Install `awslocal` with:
 pip install awscli-local
 ```
 
+View localstack service health at https://app.localstack.cloud and https://localhost:4566/health
+
+Create the `eventStream` kinesis stream with command:
+
+```bash
+awslocal kinesis create-stream --stream-name eventStream --shard-count 1
+```
+
 While this issues is still open https://github.com/prisma-labs/serverless-plugin-typescript/issues/175, first build the project manually with `tsc --build` and then start the project with `sls offline start` as described here https://github.com/FormidableLabs/serverless-jetpack/issues/74.
 
 ### Example commands for Lerna monorepo
