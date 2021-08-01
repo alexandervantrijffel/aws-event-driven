@@ -4,11 +4,15 @@ Event driven data processing demo
 
 ### Getting started
 
+Install serverless globally with `yarn global add serverless serverless-offline`
+
+Install plugins `serverless plugin install --name serverless-localstack`
+
 To run the demo locally, execute the following commands:
 
 ```bash
 yarn install
-SERVICES=kinesis TMPDIR=${TMPDIR:-/tmp} docker-compose up -d
+SERVICES=s3,dynamodb,kinesis TMPDIR=${TMPDIR:-/tmp} docker-compose up -d
 yarn lerna run start
 ```
 
@@ -17,6 +21,12 @@ Install `awslocal` with:
 ```bash
 pip install awscli-local
 ```
+
+Run erverless offline with `SLS_DEBUG=* sls offline start --stage dev`
+
+Build function and deploy with `rm .build && sls deploy -s local -v`
+
+Invoke function with `sls invoke local --function provider`
 
 ### Example commands for Lerna monorepo
 
