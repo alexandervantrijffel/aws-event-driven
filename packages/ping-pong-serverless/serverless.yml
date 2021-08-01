@@ -41,13 +41,6 @@ provider:
 
 useDotenv: true
 
-package:
-  exclude:
-    - config/.env.stg
-    - config/.env.pro
-  include:
-    - config/.env.dev
-
 functions:
   hello:
     handler: app/handler.hello
