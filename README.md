@@ -8,7 +8,7 @@ To run the demo locally, execute the following commands:
 
 ```bash
 yarn install
-docker-compose up -d broker
+SERVICES=kinesis TMPDIR=${TMPDIR:-/tmp} docker-compose up -d
 yarn lerna run start
 ```
 
