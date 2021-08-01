@@ -12,7 +12,7 @@ To run the demo locally, execute the following commands:
 
 ```bash
 yarn install
-SERVICES=s3,dynamodb,kinesis TMPDIR=${TMPDIR:-/tmp} docker-compose up -d
+docker-compose up -d
 yarn lerna run start
 ```
 
@@ -22,11 +22,7 @@ Install `awslocal` with:
 pip install awscli-local
 ```
 
-Run erverless offline with `SLS_DEBUG=* sls offline start --stage dev`
-
-Build function and deploy with `rm .build && sls deploy -s local -v`
-
-Invoke function with `sls invoke local --function provider`
+While this issues is still open https://github.com/prisma-labs/serverless-plugin-typescript/issues/175, first build the project manually with `tsc --build` and then start the project with `sls offline start` as described here https://github.com/FormidableLabs/serverless-jetpack/issues/74.
 
 ### Example commands for Lerna monorepo
 
