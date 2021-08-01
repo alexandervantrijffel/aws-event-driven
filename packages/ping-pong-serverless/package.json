@@ -7,11 +7,10 @@
   "license": "MIT",
   "main": "handler.js",
   "directories": {
-    "lib": "lib",
     "test": "__tests__"
   },
   "files": [
-    "lib"
+    ".build"
   ],
   "publishConfig": {
     "registry": "https://registry.yarnpkg.com"
@@ -21,7 +20,6 @@
     "url": "git+https://github.com/alexandervantrijffel/aws-event-driven.git"
   },
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1",
     "prebuild-ts-files": "rimraf .build",
     "build-ts-files": "tsc --build",
     "start": "SLS_DEBUG=* sls offline start --stage dev",
