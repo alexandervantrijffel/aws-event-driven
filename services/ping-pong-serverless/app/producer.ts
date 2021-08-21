@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid'
 import { MessageUtil } from './message'
 import { Kinesis } from 'aws-sdk'
+import { Context, APIGatewayEvent, APIGatewayProxyResult } from 'aws-lambda'
 
 // todo only do this in local dev
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0'
@@ -15,8 +16,6 @@ kinesis.config.update({
   httpOptions: { agent: new https.Agent({ rejectUnauthorized: false }) }
 })
 
-const streamName = 'eventStream'
-
 // todo check if the stream already exists
 // kinesis.createStream(
 //   {
@@ -26,11 +25,12 @@ const streamName = 'eventStream'
 //   (err, data) => console.log("callback", { err, data })
 // );
 
-export default async () => {
+export const handler = async (_event: APIGatewayEvent, _context: Context): Promise<APIGatewayProxyResult> => {
   try {
+    const stream = process.env.TARGET_STREAM as string
     await kinesis
       .putRecord({
-        StreamName: streamName,
+        StreamName: stream,
         PartitionKey: uuidv4(),
         Data: JSON.stringify({ happyhapp: true })
       })
@@ -38,7 +38,7 @@ export default async () => {
 
     return MessageUtil.success({
       happy: true,
-      message: 'Message placed in the Event Stream!',
+      message: `Message placed in stream ${stream}`,
       testenv: process.env.TESTENV
     })
   } catch (error) {
@@ -47,6 +47,7 @@ export default async () => {
   }
 }
 
+export default handler
 // import { APIGatewayProxyHandler } from "aws-lambda";
 // const producer: APIGatewayProxyHandler = async (event) => {
 //   let statusCode = 200;

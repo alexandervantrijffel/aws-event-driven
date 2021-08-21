@@ -1,0 +1,122 @@
+service: myService
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
+  - serverless-localstack
+    #- serverless-scriptable-plugin
+  #- serverless-bundle
+
+package:
+  individually: true
+  # todo make the package smaller with serverless-plugin-include-dependencies
+  # https://www.serverless.com/plugins/serverless-plugin-include-dependencies
+  patterns: 
+    - '!__tests__'
+    - 'node_modules/**'
+    - 'app/**'
+
+custom:
+  localstack:
+    stages:
+      # list of stages for which the plugin should be enabled
+      - local
+      - dev
+    host: http://localhost  # optional - LocalStack host to connect to
+    edgePort: 4566  # optional - LocalStack edge port to connect to
+    autostart: true  # optional - Start LocalStack in Docker on Serverless deploy
+      #lambda:
+      # Enable this flag to improve performance
+      #mountCode: True
+    docker:
+      # Enable this flag to run "docker ..." commands as sudo
+      sudo: False
+  #scriptHooks:
+    # These are all the places that jetpack could be invoked that would
+    # ensure the TS files are built right before jetpack kicks in.
+    #
+    # Workaround for https://github.com/prisma-labs/serverless-plugin-typescript/issues/175
+    # before:package:createDeploymentArtifacts: yarn run build-ts-files
+    # before:package:function:package: yarn run build-ts-files
+    # before:jetpack:package:package: yarn run build-ts-files
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: dev # default stage
+  lambdaHashingVersion: 20201221
+  region: us-east-1
+  iamManagedPolicies:
+    - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 'kinesis:PutRecord'
+        - 'kinesis:PutRecords'
+        - 'kinesis:GetRecord'
+        - 'kinesis:GetRecords'
+        - 'kinesis:GetShardIterator'
+        - 'kinesis:DescribeStream'
+        - 'kinesis:ListStreams'
+      Resource:
+        Fn::GetAtt:
+          - eventStream
+          - Arn
+  environment:
+    NODE_ENV: dev
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+
+useDotenv: true
+
+functions:
+  hello:
+    handler: app/handler.hello
+    # events:
+    #   - http: GET /
+  # if the deploy fails, comment out this consumer and first create
+  # the kinesis stream
+  consumer:
+    handler: app/consumer.handler
+    events:
+     - stream:
+        type: kinesis
+        batchSize: 10
+        startingPosition: TRIM_HORIZON
+        enabled: true
+        consumer: true
+        arn: 
+            Fn::GetAtt:
+              - eventStream
+              - Arn
+        # retrieve with
+        # awslocal kinesis describe-stream --stream-name eventStream
+        # arn: arn:aws:kinesis:us-east-1:000000000000:stream/eventStream
+  producer:
+    handler: app/producer.handler
+    # events:
+    #   - http: GET /producer
+    environment:
+      TARGET_STREAM: eventStream
+
+resources:
+  Resources:
+    eventStream:
+      Type: AWS::Kinesis::Stream
+      Properties:
+        Name: eventStream
+        RetentionPeriodHours: 8
+        ShardCount: 1
+    # Event:
+    #   Type: AWS::Lambda::EventSourceMapping
+    #   Properties:
+    #     BatchSize: 12
+    #     EventSourceArn:
+    #       Fn::GetAtt:
+    #         - eventStream
+    #         - Arn
+    #     # FunctionName: arn:aws:lambda:${self:provider:region}:<AWS ACCOUNT ID>:function:${self:functions:consumer}
+    #     FunctionName:
+    #       Fn::GetAtt:
+    #         - consumerLambdaFunction
+    #     StartingPosition: TRIM_HORIZON
+    

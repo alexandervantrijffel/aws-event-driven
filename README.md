@@ -34,10 +34,9 @@ While this issues is still open https://github.com/prisma-labs/serverless-plugin
 
 ### Run serverless functions
 
-Navigate to packages/ping-pong-serverless and run the following commands to run the producer and consumer functions:
+Navigate to services/ping-pong-serverless and run the following commands to run the producer and consumer functions:
 
 ````bash
-sls invoke local --function consumer
 sls invoke local --function producer
 ```
 
