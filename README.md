@@ -13,7 +13,7 @@ To run the demo locally, execute the following commands:
 ```bash
 yarn install
 docker-compose up -d
-yarn lerna run start
+yarn lerna exec -- yarn start
 ```
 
 Install `awslocal` with:
@@ -32,13 +32,22 @@ awslocal kinesis create-stream --stream-name eventStream --shard-count 1
 
 While this issues is still open https://github.com/prisma-labs/serverless-plugin-typescript/issues/175, first build the project manually with `tsc --build` and then start the project with `sls offline start` as described here https://github.com/FormidableLabs/serverless-jetpack/issues/74.
 
+### Run serverless functions
+
+Navigate to packages/ping-pong-serverless and run the following commands to run the producer and consumer functions:
+
+````bash
+sls invoke local --function consumer
+sls invoke local --function producer
+```
+
 ### Example commands for Lerna monorepo
 
 Create ping-pong package
 
 ```bash
 yarn lerna create @structura/ping-pong
-```
+````
 
 Add the latest stable version of typescript to all workspaces
 
