@@ -8511,10 +8511,10 @@ semver@7.3.5, semver@7.x, semver@^7.1.1, semver@^7.1.3, semver@^7.3.2, semver@^7
   dependencies:
     lru-cache "^6.0.0"
 
-serverless-localstack@0.4.32:
-  version "0.4.32"
-  resolved "https://registry.yarnpkg.com/serverless-localstack/-/serverless-localstack-0.4.32.tgz#144a96c23b9a099536ab0ce2f2846af8010d9087"
-  integrity sha512-l6Quh+tstqCmSYuxnA7r0bZcCXKN+7Y+VUefGwDxf1iKySKoMnCX+p61LKKR4/AJ9BnLgfJHMt0iOCknlpiqmA==
+serverless-localstack@0.4.33:
+  version "0.4.33"
+  resolved "https://registry.yarnpkg.com/serverless-localstack/-/serverless-localstack-0.4.33.tgz#ae904ef71bd92d7b684f1e12b8d17f4f248eba2d"
+  integrity sha512-oN7AbonG59EpXaMAscweIzvjpMc4NSaHNDQQt1PedIK5nJWy8dwQCSvoS4EV/skaNBSBklVVlvGohnQ5iFI7xw==
   dependencies:
     aws-sdk "^2.402.0"
     es6-promisify "^6.0.1"
