@@ -1,11 +1,11 @@
-import { KinesisStreamHandler, KinesisStreamRecordPayload } from 'aws-lambda'
+import { KinesisStreamHandler, KinesisStreamRecordPayload, KinesisStreamEvent, Context } from 'aws-lambda'
 import { inspect } from 'util'
 
 // todo make sure this npm package is added to the function zip package
 // and re-enable this one
 // import 'source-map-support/register'
 
-export const handler: KinesisStreamHandler = async (event, _context, _callback) => {
+export const handler: KinesisStreamHandler = async (event: KinesisStreamEvent, _context: Context, _callback) => {
   try {
     if (!event.Records) {
       console.error('no records in event!', {
