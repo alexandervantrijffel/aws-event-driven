@@ -35,13 +35,7 @@
   "compileOnSave": true,
   "references": [
     {
-      "path": "./packages/logger-util"
-    },
-    {
-      "path": "./packages/application-lifecycle"
-    },
-    {
-      "path": "./packages/service-base"
+      "path": "./services/ping-pong-serverless"
     }
   ]
 }
