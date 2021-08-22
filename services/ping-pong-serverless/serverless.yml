@@ -14,7 +14,7 @@ package:
   patterns: 
     - '!__tests__'
     - 'node_modules/**'
-    - 'app/**'
+    - 'src/**'
 
 custom:
   localstack:
@@ -70,13 +70,13 @@ useDotenv: true
 
 functions:
   hello:
-    handler: app/handler.hello
+    handler: src/hello.handler
     # events:
     #   - http: GET /
   # if the deploy fails, comment out this consumer and first create
   # the kinesis stream
   consumer:
-    handler: app/consumer.handler
+    handler: src/consumer.handler
     events:
      - stream:
         type: kinesis
@@ -92,7 +92,7 @@ functions:
         # awslocal kinesis describe-stream --stream-name eventStream
         # arn: arn:aws:kinesis:us-east-1:000000000000:stream/eventStream
   producer:
-    handler: app/producer.handler
+    handler: src/producer.handler
     # events:
     #   - http: GET /producer
     environment:

@@ -1,14 +1,12 @@
 import { KinesisStreamHandler, KinesisStreamRecordPayload, KinesisStreamEvent, Context } from 'aws-lambda'
 import { inspect } from 'util'
-
-// todo make sure this npm package is added to the function zip package
-// and re-enable this one
-// import 'source-map-support/register'
+import logger from './log'
+import 'source-map-support/register'
 
 export const handler: KinesisStreamHandler = async (event: KinesisStreamEvent, _context: Context, _callback) => {
   try {
     if (!event.Records) {
-      console.error('no records in event!', {
+      logger.error('no records in event!', {
         inspected: inspect(event),
         stringified: JSON.stringify(event)
       })
@@ -17,15 +15,14 @@ export const handler: KinesisStreamHandler = async (event: KinesisStreamEvent, _
     for (const record of event.Records) {
       const payload: KinesisStreamRecordPayload = record.kinesis
       const message: string = Buffer.from(payload.data, 'base64').toString()
-      console.log('payload', { payload })
-      console.log('message', message)
 
-      console.log(
+      logger.info(
         `Kinesis Message:
-          partition key: ${payload.partitionKey}
-          sequence number: ${payload.sequenceNumber}
           data: ${message}
+          partitionKey: ${payload.partitionKey}
+          sequenceNumber: ${payload.sequenceNumber}
           kinesis schema version: ${payload.kinesisSchemaVersion}
+          approximateArrivalTimestamp: ${payload.approximateArrivalTimestamp}
         `
       )
 
@@ -33,9 +30,7 @@ export const handler: KinesisStreamHandler = async (event: KinesisStreamEvent, _
       //
     }
   } catch (error) {
-    console.error(error)
+    logger.error(error)
     throw new Error(error)
   }
 }
-
-export default handler

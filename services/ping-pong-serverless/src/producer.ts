@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { MessageUtil } from './message'
 import { Kinesis } from 'aws-sdk'
 import { Context, APIGatewayEvent, APIGatewayProxyResult } from 'aws-lambda'
+import logger from './log'
 
 // todo only do this in local dev
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0'
@@ -42,12 +43,11 @@ export const handler = async (_event: APIGatewayEvent, _context: Context): Promi
       testenv: process.env.TESTENV
     })
   } catch (error) {
-    console.log(error)
+    logger.error(error)
     return MessageUtil.error(500, error.message)
   }
 }
 
-export default handler
 // import { APIGatewayProxyHandler } from "aws-lambda";
 // const producer: APIGatewayProxyHandler = async (event) => {
 //   let statusCode = 200;
@@ -87,5 +87,3 @@ export default handler
 //     }),
 //   };
 // };
-
-// export default producer;
