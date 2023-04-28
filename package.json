@@ -12,7 +12,7 @@
     "postinstall": "husky install"
   },
   "devDependencies": {
-    "@babel/core": "7.16.5",
+    "@babel/core": "7.21.5",
     "@commitlint/cli": "15.0.0",
     "@commitlint/config-conventional": "15.0.0",
     "@tsconfig/node14": "1.0.1",
